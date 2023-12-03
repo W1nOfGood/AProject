@@ -257,8 +257,8 @@ if __name__ == '__main__':
 
             download_btn.click(download_online_model, inputs=[model_zip_link, model_name], outputs=dl_output_message)
 
-                gr.Markdown('## Model Link Examples')
-                gr.Examples(
+            gr.Markdown('## Model Link Examples')
+            gr.Examples(
                     [
                         ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', 'Sana - Ethan (SanaIsGay)'],
                         ['https://huggingface.co/RMXK/Seungmin/resolve/main/Seungmin.zip', 'Seungmin - RMX'],
