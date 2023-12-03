@@ -168,7 +168,7 @@ if __name__ == '__main__':
 
     with gr.Blocks(title='KPOPEASYGUI 🔊',theme=gr.themes.Base(primary_hue="rose", secondary_hue="pink", neutral_hue="slate")) as app:
 
-        gr.HTML("<img  src='file/lp.gif' alt='image/gif'>")
+        gr.HTML("<img  src='src/lp.gif' alt='This is supposed to be a logo but if it breaks it will show this message so haha... tell .nww he need to fix this'>")
 
 
         # main tab
