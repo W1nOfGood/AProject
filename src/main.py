@@ -194,7 +194,7 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
     display_progress('[MDXNET KARA 2~] Separating Main Vocals from Backup Vocals...', 0.4, is_webui, progress)
     backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
 
-    display_progress('[Reverb HQ By FoxJoy~] Applying DeReverb to Vocals...', 0.6, is_webui, progress)
+    display_progress('[Reverb HQ By FoxJoy~] Applying De-Reverb to Vocals...', 0.6, is_webui, progress)
     _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
 
     return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
