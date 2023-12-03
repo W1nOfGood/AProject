@@ -181,13 +181,13 @@ if __name__ == '__main__':
                         ref_btn = gr.Button('Refresh Models 🔁', variant='primary')
 
                     with gr.Column() as yt_link_col:
-                        song_input = gr.Text(label='Song input', info='Link to a song on YouTube or full path to a local file. For file upload, click the button below.')
-                        show_file_upload_button = gr.Button('Upload file instead (Both YT and Local will still run thru MDX Vocal Seperation First)')
+                        song_input = gr.Text(label='Song input', info='Link to a song on YouTube. For file upload, click the button below.')
+                        show_file_upload_button = gr.Button('Upload file instead \n(Both YT and Local will still run thru MDX Vocal Seperation First)')
 
                     with gr.Column(visible=False) as file_upload_col:
                         local_file = gr.File(label='Audio file')
                         song_input_file = gr.UploadButton('Upload 📂 And Wait!', file_types=['audio'], variant='primary')
-                        show_yt_link_button = gr.Button('Paste YouTube link instead (Both will run thru MDX first)')
+                        show_yt_link_button = gr.Button('Paste YouTube link instead \n(Both will run thru MDX first)')
                         song_input_file.upload(process_file_upload, inputs=[song_input_file], outputs=[local_file, song_input])
 
                     with gr.Column():
