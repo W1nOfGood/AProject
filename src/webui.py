@@ -173,7 +173,7 @@ if __name__ == '__main__':
 
         # main tab
         with gr.Tab("Use The Models Here!"):
-            gr.Markdown('## Hi I wanted to say I have added a queue system so if you are stuck at "queue" that means someone either converting or using it so please wait...')
+            gr.Markdown('## Hi I wanted to say I have added a queue system so if you are stuck at "queue" that means someone is using it ETA: 2 Min/Conversion')
             with gr.Accordion('Main Options'):
                 with gr.Row():
                     with gr.Column():
