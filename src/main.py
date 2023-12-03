@@ -201,6 +201,8 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
 
+        return orig_song_path
+
 
 
 def voice_change(voice_model, vocals_path, output_path, pitch_change, f0_method, index_rate, filter_radius, rms_mix_rate, protect, crepe_hop_length, is_webui):
