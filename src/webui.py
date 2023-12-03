@@ -187,7 +187,7 @@ if __name__ == '__main__':
                     with gr.Column(visible=False) as file_upload_col:
                         local_file = gr.File(label='Audio file')
                         song_input_file = gr.UploadButton('Upload 📂 And Wait!', file_types=['audio'], variant='primary')
-                        show_yt_link_button = gr.Button('Paste YouTube link Or Path to local file instead (Both will run thru UVR first)')
+                        show_yt_link_button = gr.Button('Paste YouTube link Or Path to local file instead (Both will run thru MDX first)')
                         song_input_file.upload(process_file_upload, inputs=[song_input_file], outputs=[local_file, song_input])
 
                     with gr.Column():
