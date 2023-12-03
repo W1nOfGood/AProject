@@ -172,7 +172,7 @@ if __name__ == '__main__':
 
 
         # main tab
-        with gr.Tab("Generate"):
+        with gr.Tab("Use The Models Here!"):
 
             with gr.Accordion('Main Options'):
                 with gr.Row():
@@ -244,7 +244,7 @@ if __name__ == '__main__':
                                      reverb_dry, reverb_damping, output_format, ai_cover])
 
         # Download tab
-        with gr.Tab('Download models'):
+        with gr.Tab('Download Models Here!'):
 
             with gr.Row():
                 gr.Markdown('# ONLY HUGGINGFACE AND PiXELDRAiN Link!')
