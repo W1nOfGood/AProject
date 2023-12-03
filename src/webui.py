@@ -166,9 +166,10 @@ if __name__ == '__main__':
     with open(os.path.join(rvc_models_dir, 'public_models.json'), encoding='utf8') as infile:
         public_models = json.load(infile)
 
-    with gr.Blocks(title='AICoverGenWebUI') as app:
+    with gr.Blocks(title='KPOPEASYGUI 🔊',theme=gr.themes.Base(primary_hue="rose", secondary_hue="pink", neutral_hue="slate")) as app:
 
-        gr.Label('RVC WebUI created with ❤️ \nAdapted For Public Use By Yeah...', show_label=False)
+        gr.HTML("<img  src='file/lp.gif' alt='image/gif'>")
+
 
         # main tab
         with gr.Tab("Generate"):
@@ -205,7 +206,7 @@ if __name__ == '__main__':
                         f0_method = gr.Dropdown(['rmvpe', 'mangio-crepe'], value='rmvpe', label='Pitch detection algorithm', info='Best option is rmvpe (clarity in vocals), then mangio-crepe (smoother vocals)')
                         crepe_hop_length = gr.Slider(32, 320, value=128, step=1, visible=False, label='Crepe hop length', info='Lower values leads to longer conversions and higher risk of voice cracks, but better pitch accuracy.')
                         f0_method.change(show_hop_slider, inputs=f0_method, outputs=crepe_hop_length)
-                keep_files = gr.Checkbox(interactive=False, label='Keep intermediate files', info='(Sorry I need to reserve my space so this will be disabled, This keep all audio files generated in the song_output/id directory, e.g. Isolated Vocals/Instrumentals.')
+                keep_files = gr.Checkbox(interactive=False, label='Keep intermediate files', info='(Sorry I need to reserve my space so this will be disabled) This keep all audio files generated in the song_output/id directory, e.g. Isolated Vocals/Instrumentals.')
 
             with gr.Accordion('Audio mixing options', open=False):
                 gr.Markdown('### Volume Change (decibels)')
@@ -260,10 +261,10 @@ if __name__ == '__main__':
             gr.Markdown('## Model Link Examples')
             gr.Examples(
                     [
-                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', 'Sana - Ethan (SanaIsGay)'],
-                        ['https://huggingface.co/RMXK/Seungmin/resolve/main/Seungmin.zip', 'Seungmin - RMX'],
-                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', 'SANA [Deep/Mature] - Ethan (SanaIsGay)'],
-                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/MinaNew.zip', 'MINA - Ethan (SanaIsGay)'],
+                        ['https://huggingface.co/aaalby/lily2/resolve/main/lily2.zip', '[NMIXX] LiLY - ALBY (Yiren AI on YT)'],
+                        ['https://huggingface.co/RMXK/Seungmin/resolve/main/Seungmin.zip', '[SKZ] Seungmin - RMX (On Discord)'],
+                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', '[TW] SANA [Deep/Mature] - Ethan (SanaIsGay on YT)'],
+                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/MinaNew.zip', '[TW] MINA - Ethan (SanaIsGay on YT)'],
                     ],
                     [model_zip_link, model_name],
                     [],
