@@ -172,17 +172,6 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
 
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
-
-        display_progress('[~] Separating Vocals from Instrumental...', 0.3, is_webui, progress)
-        vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'), orig_song_path, denoise=True, keep_orig=keep_orig)
-
-        display_progress('[~] Separating Main Vocals from Backup Vocals...', 0.4, is_webui, progress)
-        backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
-
-        display_progress('[~] Applying DeReverb to Vocals...', 0.6, is_webui, progress)
-        _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
-
-        return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
     
     elif input_type == 'local':
 
@@ -191,12 +180,6 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
 
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
-
-        vocals_path, instrumentals_path = song_input
-        backup_vocals_path, main_vocals_path = song_input
-        _, main_vocals_dereverb_path = song_input
-
-        return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
     
     else:
 
@@ -204,18 +187,17 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
 
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
-        
-        display_progress('[~] Separating Vocals from Instrumental...', 0.3, is_webui, progress)
-        vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'), orig_song_path, denoise=True, keep_orig=keep_orig)
 
-        display_progress('[~] Separating Main Vocals from Backup Vocals...', 0.4, is_webui, progress)
-        backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
+    display_progress('[~] Separating Vocals from Instrumental...', 0.3, is_webui, progress)
+    vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'), orig_song_path, denoise=True, keep_orig=keep_orig)
+    
+    display_progress('[~] Separating Main Vocals from Backup Vocals...', 0.4, is_webui, progress)
+    backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
 
-        display_progress('[~] Applying DeReverb to Vocals...', 0.6, is_webui, progress)
-        _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
+    display_progress('[~] Applying DeReverb to Vocals...', 0.6, is_webui, progress)
+    _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
 
-        return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
-
+    return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
 
 
 def voice_change(voice_model, vocals_path, output_path, pitch_change, f0_method, index_rate, filter_radius, rms_mix_rate, protect, crepe_hop_length, is_webui):
