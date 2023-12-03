@@ -191,8 +191,12 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
 
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
-        
-        return orig_song_path
+
+        vocals_path, instrumentals_path = orig_song_path
+        backup_vocals_path, main_vocals_path = orig_song_path
+        _, main_vocals_dereverb_path = orig_song_path
+
+        return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
     
     else:
 
@@ -257,7 +261,7 @@ def song_cover_pipeline(song_input, voice_model, pitch_change, keep_files,
         if not song_input or not voice_model:
             raise_exception('Ensure that the song input field and voice model field is filled.', is_webui)
 
-        display_progress('[~] Starting AI Cover Generation Pipeline...', 0, is_webui, progress)
+        display_progress('[~] Starting RVC Cover Generation Pipeline...', 0, is_webui, progress)
 
         with open(os.path.join(mdxnet_models_dir, 'model_data.json')) as infile:
             mdx_model_params = json.load(infile)
