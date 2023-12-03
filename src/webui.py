@@ -274,7 +274,7 @@ if __name__ == '__main__':
 
     app.launch(
         share=args.share_enabled,
-        enable_queue=True,
+        enable_queue=False,
         server_name=None if not args.listen else (args.listen_host or '0.0.0.0'),
         server_port=args.listen_port,
     )
