@@ -166,7 +166,7 @@ def display_progress(message, percent, is_webui, progress=None):
 def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type, progress=None):
     keep_orig = False
     if input_type == 'yt':
-        display_progress('[~] Downloading song...', 0, is_webui, progress)
+        display_progress('[YT~] Downloading song...', 0, is_webui, progress)
         song_link = song_input.split('&')[0]
         orig_song_path = yt_download(song_link)
 
@@ -188,13 +188,13 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
 
-    display_progress('[~] Separating Vocals from Instrumental...', 0.3, is_webui, progress)
+    display_progress('[VocFT~] Separating Vocals from Instrumental...', 0.3, is_webui, progress)
     vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'), orig_song_path, denoise=True, keep_orig=keep_orig)
     
-    display_progress('[~] Separating Main Vocals from Backup Vocals...', 0.4, is_webui, progress)
+    display_progress('[MDXNET KARA 2~] Separating Main Vocals from Backup Vocals...', 0.4, is_webui, progress)
     backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
 
-    display_progress('[~] Applying DeReverb to Vocals...', 0.6, is_webui, progress)
+    display_progress('[Reverb HQ By FoxJoy~] Applying DeReverb to Vocals...', 0.6, is_webui, progress)
     _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
 
     return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
@@ -252,7 +252,7 @@ def song_cover_pipeline(song_input, voice_model, pitch_change, keep_files,
         if not song_input or not voice_model:
             raise_exception('Ensure that the song input field and voice model field is filled.', is_webui)
 
-        display_progress('[~] Starting RVC Cover Generation Pipeline...', 0, is_webui, progress)
+        display_progress('[Process~] Starting RVC Cover Generation Pipeline...', 0, is_webui, progress)
 
         with open(os.path.join(mdxnet_models_dir, 'model_data.json')) as infile:
             mdx_model_params = json.load(infile)
@@ -297,22 +297,22 @@ def song_cover_pipeline(song_input, voice_model, pitch_change, keep_files,
         ai_cover_path = os.path.join(song_dir, f'{os.path.splitext(os.path.basename(orig_song_path))[0]} ({voice_model} Ver).{output_format}')
 
         if not os.path.exists(ai_vocals_path):
-            display_progress('[~] Converting voice using RVC...', 0.85, is_webui, progress)
+            display_progress('[RVC~] Converting voice using RVC...', 0.85, is_webui, progress)
             voice_change(voice_model, main_vocals_dereverb_path, ai_vocals_path, pitch_change, f0_method, index_rate, filter_radius, rms_mix_rate, protect, crepe_hop_length, is_webui)
 
-        display_progress('[~] Applying audio effects to Vocals...', 0.9, is_webui, progress)
+        display_progress('[Post~] Applying audio effects to Vocals...', 0.9, is_webui, progress)
         ai_vocals_mixed_path = add_audio_effects(ai_vocals_path, reverb_rm_size, reverb_wet, reverb_dry, reverb_damping)
 
         if pitch_change_all != 0:
-            display_progress('[~] Applying overall pitch change', 0.95, is_webui, progress)
+            display_progress('[Post~] Applying overall pitch change', 0.95, is_webui, progress)
             instrumentals_path = pitch_shift(instrumentals_path, pitch_change_all)
             backup_vocals_path = pitch_shift(backup_vocals_path, pitch_change_all)
 
-        display_progress('[~] Combining AI Vocals and Instrumentals...', 0.99, is_webui, progress)
+        display_progress('[Post~] Combining AI Vocals and Instrumentals...', 0.99, is_webui, progress)
         combine_audio([ai_vocals_mixed_path, backup_vocals_path, instrumentals_path], ai_cover_path, main_gain, backup_gain, inst_gain, output_format)
 
         if not keep_files:
-            display_progress('[~] Removing intermediate audio files...', 1.0, is_webui, progress)
+            display_progress('[System~] Removing intermediate audio files...', 1.0, is_webui, progress)
             intermediate_files = [vocals_path, main_vocals_path, ai_vocals_mixed_path]
             if pitch_change_all != 0:
                 intermediate_files += [instrumentals_path, backup_vocals_path]
