@@ -31,10 +31,10 @@ output_dir = os.path.join(BASE_DIR, 'song_output')
 def get_youtube_video_id(url, ignore_playlist=True):
     """
     Examples:
-    http://youtu.be/SA2iWivDJiE
-    http://www.youtube.com/watch?v=_oPAwA_Udwc&feature=feedu
-    http://www.youtube.com/embed/SA2iWivDJiE
-    http://www.youtube.com/v/SA2iWivDJiE?version=3&amp;hl=en_US
+    https://www.youtube.com/watch?v=cYS-kcr72Vc
+    https://www.youtube.com/watch?v=ulr0muQKjk0
+    https://www.youtube.com/watch?v=nEM9fQJpJvg
+    https://www.youtube.com/watch?v=lxchSHUVS5w
     """
     query = urlparse(url)
     if query.hostname == 'youtu.be':
@@ -169,23 +169,28 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
         display_progress('[~] Downloading song...', 0, is_webui, progress)
         song_link = song_input.split('&')[0]
         orig_song_path = yt_download(song_link)
+
+        song_output_dir = os.path.join(output_dir, song_id)
+        orig_song_path = convert_to_stereo(orig_song_path)
+        display_progress('[~] Separating Vocals from Instrumental...', 0.1, is_webui, progress)
+        vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'), orig_song_path, denoise=True, keep_orig=keep_orig)
+
+        display_progress('[~] Separating Main Vocals from Backup Vocals...', 0.2, is_webui, progress)
+        backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
+
+        display_progress('[~] Applying DeReverb to Vocals...', 0.3, is_webui, progress)
+        _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
     elif input_type == 'local':
         orig_song_path = song_input
         keep_orig = True
+        
+        song_output_dir = os.path.join(output_dir, song_id)
+        orig_song_path = convert_to_stereo(orig_song_path)
     else:
         orig_song_path = None
 
-    song_output_dir = os.path.join(output_dir, song_id)
-    orig_song_path = convert_to_stereo(orig_song_path)
-
-    display_progress('[~] Separating Vocals from Instrumental...', 0.1, is_webui, progress)
-    vocals_path, instrumentals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR-MDX-NET-Voc_FT.onnx'), orig_song_path, denoise=True, keep_orig=keep_orig)
-
-    display_progress('[~] Separating Main Vocals from Backup Vocals...', 0.2, is_webui, progress)
-    backup_vocals_path, main_vocals_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'UVR_MDXNET_KARA_2.onnx'), vocals_path, suffix='Backup', invert_suffix='Main', denoise=True)
-
-    display_progress('[~] Applying DeReverb to Vocals...', 0.3, is_webui, progress)
-    _, main_vocals_dereverb_path = run_mdx(mdx_model_params, song_output_dir, os.path.join(mdxnet_models_dir, 'Reverb_HQ_By_FoxJoy.onnx'), main_vocals_path, invert_suffix='DeReverb', exclude_main=True, denoise=True)
+        song_output_dir = os.path.join(output_dir, song_id)
+        orig_song_path = convert_to_stereo(orig_song_path)
 
     return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
 
