@@ -263,7 +263,7 @@ if __name__ == '__main__':
                     [
                         ['https://huggingface.co/aaalby/lily2/resolve/main/lily2.zip', '[NMIXX] LiLY - ALBY (Yiren AI on YT)'],
                         ['https://huggingface.co/RMXK/Seungmin/resolve/main/Seungmin.zip', '[SKZ] Seungmin - RMX (On Discord)'],
-                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', '[TW] SANA [Deep/Mature] - Ethan (SanaIsGay on YT)'],
+                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', '[TW] SANA [Deep - Mature] - Ethan (SanaIsGay on YT)'],
                         ['https://huggingface.co/SanaIsGay/Models/resolve/main/MinaNew.zip', '[TW] MINA - Ethan (SanaIsGay on YT)'],
                     ],
                     [model_zip_link, model_name],
