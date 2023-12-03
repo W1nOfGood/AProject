@@ -226,9 +226,9 @@ if __name__ == '__main__':
                 output_format = gr.Dropdown(['mp3', 'wav'], value='wav', label='Output file type', info='mp3: small file size, ok-ish quality. wav: Large file size, best quality')
 
             with gr.Row():
-                clear_btn = gr.ClearButton(value='Clear', components=[song_input, rvc_model, keep_files, local_file])
-                generate_btn = gr.Button("Covert Now!!!!!!!", variant='primary')
-                ai_cover = gr.Audio(label='AI Cover', show_share_button=False)
+                clear_btn = gr.ClearButton(value='Clear Everything', components=[song_input, rvc_model, keep_files, local_file])
+                generate_btn = gr.Button("Yeah Convert this thing now haha!", variant='primary')
+                ai_cover = gr.Audio(label='Final Output!', show_share_button=False)
 
             ref_btn.click(update_models_list, None, outputs=rvc_model)
             is_webui = gr.Number(value=1, visible=False)
