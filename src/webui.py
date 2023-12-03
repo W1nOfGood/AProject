@@ -187,7 +187,7 @@ if __name__ == '__main__':
                     with gr.Column(visible=False) as file_upload_col:
                         local_file = gr.File(label='Audio file')
                         song_input_file = gr.UploadButton('Upload 📂 And Wait!', file_types=['audio'], variant='primary')
-                        show_yt_link_button = gr.Button('Paste YouTube link Or Path to local file instead')
+                        show_yt_link_button = gr.Button('Paste YouTube link Or Path to local file instead (Both will run thru UVR first)')
                         song_input_file.upload(process_file_upload, inputs=[song_input_file], outputs=[local_file, song_input])
 
                     with gr.Column():
@@ -215,7 +215,7 @@ if __name__ == '__main__':
                     backup_gain = gr.Slider(-20, 20, value=0, step=1, label='Backup Vocals')
                     inst_gain = gr.Slider(-20, 20, value=0, step=1, label='Music')
 
-                gr.Markdown('### Reverb Control on AI Vocals')
+                gr.Markdown('### Reverb Control on RVC Vocals')
                 with gr.Row():
                     reverb_rm_size = gr.Slider(0, 1, value=0.15, label='Room size', info='The larger the room, the longer the reverb time')
                     reverb_wet = gr.Slider(0, 1, value=0.2, label='Wetness level', info='Level of RVC vocals with reverb')
