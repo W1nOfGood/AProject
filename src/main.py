@@ -192,9 +192,9 @@ def preprocess_song(song_input, mdx_model_params, song_id, is_webui, input_type,
         song_output_dir = os.path.join(output_dir, song_id)
         orig_song_path = convert_to_stereo(orig_song_path)
 
-        vocals_path, instrumentals_path = "/Notebooks/HRVC"
-        backup_vocals_path, main_vocals_path = "/Notebooks/HRVC"
-        _, main_vocals_dereverb_path = orig_song_path
+        vocals_path, instrumentals_path = song_input
+        backup_vocals_path, main_vocals_path = song_input
+        _, main_vocals_dereverb_path = song_input
 
         return orig_song_path, vocals_path, instrumentals_path, main_vocals_path, backup_vocals_path, main_vocals_dereverb_path
     
