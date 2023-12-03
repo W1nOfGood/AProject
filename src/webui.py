@@ -166,7 +166,7 @@ if __name__ == '__main__':
     with open(os.path.join(rvc_models_dir, 'public_models.json'), encoding='utf8') as infile:
         public_models = json.load(infile)
 
-    with gr.Blocks(title='AICoverGenWebUI') as app:
+    with gr.Blocks(title='AICoverGenWebUI Adapted For Public Use By Yeah...') as app:
 
         gr.Label('AICoverGen WebUI created with ❤️', show_label=False)
 
@@ -186,7 +186,7 @@ if __name__ == '__main__':
                     with gr.Column(visible=False) as file_upload_col:
                         local_file = gr.File(label='Audio file')
                         song_input_file = gr.UploadButton('Upload 📂', file_types=['audio'], variant='primary')
-                        show_yt_link_button = gr.Button('Paste YouTube link/Path to local file instead')
+                        show_yt_link_button = gr.Button('Paste YouTube link Or Path to local file instead')
                         song_input_file.upload(process_file_upload, inputs=[song_input_file], outputs=[local_file, song_input])
 
                     with gr.Column():
@@ -197,10 +197,10 @@ if __name__ == '__main__':
 
             with gr.Accordion('Voice conversion options', open=False):
                 with gr.Row():
-                    index_rate = gr.Slider(0, 1, value=0.5, label='Index Rate', info="Controls how much of the AI voice's accent to keep in the vocals")
+                    index_rate = gr.Slider(0, 1, value=0.75, label='Index Rate', info="Controls how much of the AI voice's accent to keep in the vocals")
                     filter_radius = gr.Slider(0, 7, value=3, step=1, label='Filter radius', info='If >=3: apply median filtering median filtering to the harvested pitch results. Can reduce breathiness')
                     rms_mix_rate = gr.Slider(0, 1, value=0.25, label='RMS mix rate', info="Control how much to mimic the original vocal's loudness (0) or a fixed loudness (1)")
-                    protect = gr.Slider(0, 0.5, value=0.33, label='Protect rate', info='Protect voiceless consonants and breath sounds. Set to 0.5 to disable.')
+                    protect = gr.Slider(0, 0.5, value=0.30, label='Protect rate', info='Protect voiceless consonants and breath sounds. Set to 0.5 to disable.')
                     with gr.Column():
                         f0_method = gr.Dropdown(['rmvpe', 'mangio-crepe'], value='rmvpe', label='Pitch detection algorithm', info='Best option is rmvpe (clarity in vocals), then mangio-crepe (smoother vocals)')
                         crepe_hop_length = gr.Slider(32, 320, value=128, step=1, visible=False, label='Crepe hop length', info='Lower values leads to longer conversions and higher risk of voice cracks, but better pitch accuracy.')
@@ -222,11 +222,11 @@ if __name__ == '__main__':
                     reverb_damping = gr.Slider(0, 1, value=0.7, label='Damping level', info='Absorption of high frequencies in the reverb')
 
                 gr.Markdown('### Audio Output Format')
-                output_format = gr.Dropdown(['mp3', 'wav'], value='mp3', label='Output file type', info='mp3: small file size, decent quality. wav: Large file size, best quality')
+                output_format = gr.Dropdown(['mp3', 'wav'], value='mp3', label='Output file type', info='mp3: small file size, ok-ish quality. wav: Large file size, best quality')
 
             with gr.Row():
                 clear_btn = gr.ClearButton(value='Clear', components=[song_input, rvc_model, keep_files, local_file])
-                generate_btn = gr.Button("Generate", variant='primary')
+                generate_btn = gr.Button("Covert Now!!!!!!!", variant='primary')
                 ai_cover = gr.Audio(label='AI Cover', show_share_button=False)
 
             ref_btn.click(update_models_list, None, outputs=rvc_model)
@@ -243,7 +243,7 @@ if __name__ == '__main__':
                                      reverb_dry, reverb_damping, output_format, ai_cover])
 
         # Download tab
-        with gr.Tab('Download model'):
+        with gr.Tab('Download models'):
 
             with gr.Tab('From HuggingFace/Pixeldrain URL'):
                 with gr.Row():
@@ -251,17 +251,18 @@ if __name__ == '__main__':
                     model_name = gr.Text(label='Name your model', info='Give your new model a unique name from your other voice models.')
 
                 with gr.Row():
-                    download_btn = gr.Button('Download 🌐', variant='primary', scale=19)
+                    download_btn = gr.Button('Download Model 🌐', variant='primary', scale=19)
                     dl_output_message = gr.Text(label='Output Message', interactive=False, scale=20)
 
                 download_btn.click(download_online_model, inputs=[model_zip_link, model_name], outputs=dl_output_message)
 
-                gr.Markdown('## Input Examples')
+                gr.Markdown('## Model Link Examples')
                 gr.Examples(
                     [
-                        ['https://huggingface.co/phant0m4r/LiSA/resolve/main/LiSA.zip', 'Lisa'],
-                        ['https://pixeldrain.com/u/3tJmABXA', 'Gura'],
-                        ['https://huggingface.co/Kit-Lemonfoot/kitlemonfoot_rvc_models/resolve/main/AZKi%20(Hybrid).zip', 'Azki']
+                        ['https://huggingface.co/SanaIsGay/Models/resolve/main/Sana2.zip', 'Sana - Ethan (SanaIsGay)'],
+                        ['https://huggingface.co/RMXK/Seungmin/resolve/main/Seungmin.zip', 'Seungmin - RMX'],
+                        ['https://mega.nz/file/pHRRjSAC#kHTOLC9P1I01ACMb8ZTGes7V7THtSHdfK_BT3ffaqC8', 'MINA - Ethan (DIJEI)'],
+                        ['https://drive.google.com/file/d/1Rzoq6JLfCnupd4togwyOp-Od1J9VMAOr/view?usp=sharing', 'Chaeyoung [RAP] - Ethan (SanaIsGay)'],
                     ],
                     [model_zip_link, model_name],
                     [],
@@ -281,7 +282,7 @@ if __name__ == '__main__':
                     pub_model_name = gr.Text(label='Model name')
 
                 with gr.Row():
-                    download_pub_btn = gr.Button('Download 🌐', variant='primary', scale=19)
+                    download_pub_btn = gr.Button('Download Model! 🌐', variant='primary', scale=19)
                     pub_dl_output_message = gr.Text(label='Output Message', interactive=False, scale=20)
 
                 filter_tags = gr.CheckboxGroup(value=[], label='Show voice models with tags', choices=[])
